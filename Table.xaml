@@ -1,0 +1,96 @@
+﻿<UserControl x:Class="SpecWpfMash.Table"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SpecWpfMash"
+             xmlns:system="clr-namespace:System;assembly=System.Runtime"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Medium"
+             FontFamily="{materialDesign:MaterialDesignFont}"
+             Background="White"
+             mc:Ignorable="d" 
+          >
+    
+    <UserControl.DataContext>
+        <local:TableViewModel/>
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ObjectDataProvider x:Key="enumTypes"
+                                            MethodName="GetValues" ObjectType="{x:Type system:Enum}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="local:enumTypes"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Indigo.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.DeepPurple.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid HorizontalAlignment="Stretch">
+        <StackPanel>
+            <TextBlock FontSize="64" Padding="0,9,0,0" Margin="30,0,0,0">Table</TextBlock>
+            <DataGrid
+              
+            ItemsSource="{Binding ResultDatas}" 
+            CanUserSortColumns="True"
+            CanUserAddRows="False"
+            AutoGenerateColumns="False"
+            materialDesign:DataGridAssist.CellPadding="13 8 8 8"
+            materialDesign:DataGridAssist.ColumnHeaderPadding="8" Margin="15,30,15,100" HorizontalAlignment="Stretch">
+                <DataGrid.Columns>
+                    <!-- use custom combo box column to get better combos. Use ItemsSourceBinding as your binding template to be applied to each combo -->
+                    <!--DataGridCheckBoxColumn
+                     Binding="{Binding IsSelected}"
+                     ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}"
+                     EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}">
+                    <DataGridCheckBoxColumn.Header>
+                        
+                        <Border
+                              Background="Transparent"
+                          Padding="6 0 6 0"
+                            HorizontalAlignment="Center">
+                            <CheckBox
+                                 HorizontalAlignment="Center"
+                                 DataContext="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext}"
+                                    IsChecked="{Binding IsAllItems3Selected}" />
+                        </Border>
+                    </DataGridCheckBoxColumn.Header>
+                    </DataGridCheckBoxColumn-->
+                    <DataGridTextColumn
+                     Binding="{Binding No}"
+                     Header="No."
+                     EditingElementStyle="{StaticResource MaterialDesignDataGridTextColumnEditingStyle}" />
+                    <!-- if you want to use the pop up style (MaterialDesignDataGridTextColumnPopupEditingStyle), you must use MaterialDataGridTextColumn -->
+                    <materialDesign:DataGridTextColumn
+                    Binding="{Binding ItemA}"
+                    Header="Item A"
+                     MaxLength="25"
+                    IsReadOnly="True" />
+                    <materialDesign:DataGridTextColumn
+                    Binding="{Binding ItemB}"
+                    Header="Item B"
+                    />
+                    <materialDesign:DataGridComboBoxColumn
+                    Header="CustomEnumType" SelectedItemBinding="{Binding enumType}" 
+                    ItemsSource="{Binding Source={StaticResource enumTypes}}"
+                     />
+                </DataGrid.Columns>
+            </DataGrid>
+        </StackPanel>
+
+        <!--DataGrid
+             Margin="0 8 0 0"
+             ItemsSource="{Binding Items3}"
+             CanUserSortColumns="True"
+             CanUserAddRows="False"
+             materialDesign:DataGridAssist.CellPadding="4 2 2 2"
+             materialDesign:DataGridAssist.ColumnHeaderPadding="4 2 2 2" /-->
+    </Grid>
+</UserControl>
